@@ -180,23 +180,16 @@ export class LinkedList {
       throw new RangeError("Index out of bounds");
     }
 
-    if (idx === this.size()) return this.pop();
+    if (idx === 0) return this.pop();
 
     let nodeItem = this.#head;
-    let prevNode, removedNode;
+    let removedNode;
     let itemIndex = 0;
     while (nodeItem) {
       if (itemIndex === idx - 1) {
-        prevNode = nodeItem;
+        removedNode = nodeItem.next
+        nodeItem.next = removedNode.next
         
-      }
-
-      if (itemIndex === idx) removedNode = nodeItem;
-
-      if (itemIndex === idx + 1) {
-        prevNode.next = nodeItem;
-        
-        break;
       }
 
       itemIndex++;
