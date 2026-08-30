@@ -1,28 +1,32 @@
 export class LinkedList {
   #head;
 
-  constructor(headNode) {
-    this.#head = headNode;
+  constructor(value) {
+    if (value) {
+      this.#head = new Node(value);
+    }
   }
 
   get head() {
     return this.#head;
   }
 
-  append(node) {
-    if (!(node instanceof Node))
-      throw new TypeError("Input should of type Node");
+  append(data) {
+    // if (!(node instanceof Node))
+    //   throw new TypeError("Input should of type Node");
+    const newNode = new Node(data)
+
 
     // set head if null
     if (!this.#head) {
-      this.#head = node;
+      this.#head = newNode;
       return this;
     }
 
     let nextNode = this.#head;
     while (nextNode) {
       if (!this.#hasNextNode(nextNode)) {
-        nextNode.next = node;
+        nextNode.next = newNode;
         break;
       }
 
@@ -32,13 +36,12 @@ export class LinkedList {
     return this;
   }
 
-  prepend(node) {
-    if (!(node instanceof Node))
-      throw new TypeError("Input should of type Node");
-
+  prepend(value) {
+    const node = new Node(value);
+    console.log(node);
+    
     node.next = this.#head;
     this.#head = node;
-
     return this;
   }
 
@@ -148,16 +151,17 @@ export class LinkedList {
     return str;
   }
 
-  insertAt(node, idx) {
+  insertAt(value, idx) {
+    const newNode = new Node(value)
     if (!this.#head) {
-      this.#head = node;
+      this.#head = newNode;
       return;
     }
 
-    if (!(node instanceof Node))
-      throw new TypeError("node should be of type Node");
+    if (!Number.isFinite(idx))
+      throw new TypeError("Index is not a number")
 
-    if (!this.#idxWithinListBounds(idx) || !Number.isFinite(idx))
+    if (!this.#idxWithinListBounds(idx))
       throw new RangeError("idx is out of bounds!");
 
     let nodeItem = this.#head;
@@ -165,8 +169,8 @@ export class LinkedList {
     while (nodeItem) {
       if (itemIdx === idx - 1) {
         const nextNode = nodeItem.next;
-        nodeItem.next = node;
-        node.next = nextNode;
+        nodeItem.next = newNode;
+        newNode.next = nextNode;
         break;
       }
 
@@ -214,7 +218,6 @@ export class Node {
 
   constructor(data) {
     this.data = data;
-    this.next = null;
   }
 }
 
