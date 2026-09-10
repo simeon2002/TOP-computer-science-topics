@@ -14,12 +14,13 @@ export class LinkedList {
   append(data) {
     // if (!(node instanceof Node))
     //   throw new TypeError("Input should of type Node");
-    const newNode = new Node(data)
-
+    const newNode = new Node(data);
 
     // set head if null
     if (!this.#head) {
       this.#head = newNode;
+      console.log(this);
+
       return this;
     }
 
@@ -39,7 +40,7 @@ export class LinkedList {
   prepend(value) {
     const node = new Node(value);
     console.log(node);
-    
+
     node.next = this.#head;
     this.#head = node;
     return this;
@@ -79,17 +80,16 @@ export class LinkedList {
     let nodeItem = this.#head;
 
     while (nodeItem) {
-      
       if (idx === itemCounter) {
         break;
       }
-      
+
       if (!this.#hasNextNode(nodeItem)) return;
       itemCounter++;
       nodeItem = nodeItem.next;
     }
 
-    return nodeItem;
+    return nodeItem.data;
   }
 
   pop() {
@@ -100,6 +100,12 @@ export class LinkedList {
     else this.#head = undefined;
 
     return headNode;
+  }
+
+  clear() {
+    while (this.size() !== 0) {
+      this.pop();
+    }
   }
 
   contains(value) {
@@ -116,13 +122,16 @@ export class LinkedList {
     return false;
   }
 
-  findIndex(value) {
+  findIndex(
+    value,
+    comparator = (storedValue, searchedValue) => storedValue === searchedValue,
+  ) {
     if (!this.#head) return -1;
 
     let nodeItem = this.#head;
     let idx = 0;
     while (nodeItem) {
-      if (nodeItem.data === value) return idx;
+      if (comparator(nodeItem.data, value)) return idx;
 
       if (!this.#hasNextNode(nodeItem)) break;
 
@@ -152,14 +161,13 @@ export class LinkedList {
   }
 
   insertAt(value, idx) {
-    const newNode = new Node(value)
+    const newNode = new Node(value);
     if (!this.#head) {
       this.#head = newNode;
       return;
     }
 
-    if (!Number.isFinite(idx))
-      throw new TypeError("Index is not a number")
+    if (!Number.isFinite(idx)) throw new TypeError("Index is not a number");
 
     if (!this.#idxWithinListBounds(idx))
       throw new RangeError("idx is out of bounds!");
@@ -184,23 +192,24 @@ export class LinkedList {
       throw new RangeError("Index out of bounds");
     }
 
-    if (idx === 0) return this.pop();
+    if (idx === 0) return this.pop().data;
 
     let nodeItem = this.#head;
     let removedNode;
     let itemIndex = 0;
     while (nodeItem) {
       if (itemIndex === idx - 1) {
-        removedNode = nodeItem.next
-        nodeItem.next = removedNode.next
-        
+        removedNode = nodeItem.next;
+        nodeItem.next = removedNode.next;
       }
+
+      if (itemIndex === this.size()) return;
 
       itemIndex++;
       nodeItem = nodeItem.next;
     }
 
-    return removedNode;
+    return removedNode.data;
   }
 
   #idxWithinListBounds(idx) {
@@ -221,14 +230,13 @@ export class Node {
   }
 }
 
-
 // example uses class syntax - adjust as necessary
-const list = new LinkedList();
+// const list = new LinkedList();
 
-list.append(new Node("dog"))
-list.append(new Node("cat"))
-list.append(new Node("parrot"))
-list.append(new Node("hamster"))
-list.append(new Node("snake"))
-list.append(new Node("turtle"))
-console.log(list.toString());
+// list.append(new Node("dog"));
+// list.append(new Node("cat"));
+// list.append(new Node("parrot"));
+// list.append(new Node("hamster"));
+// list.append(new Node("snake"));
+// list.append(new Node("turtle"));
+// console.log(list.toString());

@@ -50,8 +50,6 @@ describe("LinkedList class", () => {
     });
   });
 
-  
-
   describe("prepend()", () => {
     it("should add the new node as the new head", () => {
       const newHead = "New head";
@@ -83,12 +81,7 @@ describe("LinkedList class", () => {
       expect(list.size()).toBe(10);
 
       const newList = new LinkedList("ehad");
-      newList
-        .append("1")
-        .append("1")
-        .append("1")
-        .append("1")
-        .append("1");
+      newList.append("1").append("1").append("1").append("1").append("1");
 
       expect(newList.size()).toBe(6);
     });
@@ -147,9 +140,9 @@ describe("LinkedList class", () => {
     });
 
     it("should return the node item at a given index (starting from 0)", () => {
-      expect(list.at(1).data).toBe(nodeAt1);
-      expect(list.at(3).data).toBe(nodeAt3);
-      expect(list.at(4).data).toBe("node 5");
+      expect(list.at(1)).toBe(nodeAt1);
+      expect(list.at(3)).toBe(nodeAt3);
+      expect(list.at(4)).toBe("node 5");
     });
 
     it("should return undefined if no node item at that index", () => {
@@ -291,32 +284,42 @@ describe("LinkedList class", () => {
     it("should throw a type error if value is not a number", () => {
       expect(() => list.insertAt("test", 5)).toThrow(RangeError);
     });
-    
   });
 
-  // describe("removeAt()", () => {
-  //   let nodetoRemove, nodeBefore, nodeAfter, list;
-  //   beforeEach(() => {
-  //     list = new LinkedList();
-  //     nodetoRemove = new Node(1);
-  //     nodeBefore = new Node(2);
-  //     nodeAfter = new Node(3);
-  //     list
-  //       .append(new Node("head"))
-  //       .append(nodeBefore)
-  //       .append(nodetoRemove)
-  //       .append(nodeAfter);
-  //   });
+  describe("removeAt()", () => {
+    let nodetoRemove, nodeBefore, nodeAfter, list;
+    beforeEach(() => {
+      list = new LinkedList();
+      nodetoRemove = 1;
+      nodeBefore = 2;
+      nodeAfter = 3;
+      list
+        .append("head")
+        .append(nodeBefore)
+        .append(nodetoRemove)
+        .append(nodeAfter);
+    });
 
-  //   it("should return a range error if index is out of bounds", () => {
-  //     expect(() => list.removeAt(5)).toThrow(RangeError);
-  //     expect(() => list.removeAt(-1)).toThrow(RangeError);
-  //   });
+    it("should return a range error if index is out of bounds", () => {
+      expect(() => list.removeAt(5)).toThrow(RangeError);
+      expect(() => list.removeAt(-1)).toThrow(RangeError);
+    });
 
-  //   it("should return the node to be removed", () => {
-  //     expect(list.removeAt(2).data).toBe(nodetoRemove.data);
-  //     expect(list.at(1).next).toBe(nodeAfter)
-  //     expect(list.at(2)).toBe(nodeAfter)
-  //   });
-  // });
+    it("should return the node to be removed", () => {
+      expect(list.removeAt(2)).toBe(nodetoRemove);
+      expect(list.at(1)).toBe(nodeBefore);
+      expect(list.at(2)).toBe(nodeAfter);
+    });
+  });
+
+  describe("clear()", () => {
+    it("should remove all elements from the linked list", () => {
+      const list = new LinkedList();
+      list.append("head").append("2").append(3).append(3);
+
+      expect(list.size()).toBe(4);
+      list.clear();
+      expect(list.size()).toBe(0);
+    });
+  });
 });
